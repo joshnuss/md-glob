@@ -15,7 +15,6 @@
 		"test:unit": "vitest"
 	},
 	"dependencies": {
-		"@repo/ui": "workspace:*"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.42.1",
