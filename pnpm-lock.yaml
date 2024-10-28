@@ -122,6 +122,9 @@ importers:
       vite:
         specifier: ^5.0.3
         version: 5.1.4(@types/node@22.8.1)
+      vite-plugin-full-reload:
+        specifier: ^1.2.0
+        version: 1.2.0
 
   packages/config-eslint:
     dependencies:
@@ -2889,6 +2892,9 @@ packages:
     resolution: {integrity: sha512-kqa9v+oi4HwkG6g8ufRnb5AeplcRw8jUF6/7/Qz1qRQOXHImG8YnLbB+LLszENwFnoBl9xIf9nVdCFzNd7GQEg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
+
+  vite-plugin-full-reload@1.2.0:
+    resolution: {integrity: sha512-kz18NW79x0IHbxRSHm0jttP4zoO9P9gXh+n6UTwlNKnviTTEpOlum6oS9SmecrTtSr+muHEn5TUuC75UovQzcA==}
 
   vite@5.1.4:
     resolution: {integrity: sha512-n+MPqzq+d9nMVTKyewqw6kSt+R3CkvF9QAKY8obiQn8g1fwTscKxyfaYnC632HtBXAQGc1Yjomphwn1dtwGAHg==}
@@ -6318,7 +6324,7 @@ snapshots:
       cac: 6.7.14
       debug: 4.3.4
       pathe: 1.1.1
-      picocolors: 1.0.0
+      picocolors: 1.1.1
       vite: 5.1.4(@types/node@22.8.1)
     transitivePeerDependencies:
       - '@types/node'
@@ -6345,6 +6351,11 @@ snapshots:
       - sugarss
       - supports-color
       - terser
+
+  vite-plugin-full-reload@1.2.0:
+    dependencies:
+      picocolors: 1.1.1
+      picomatch: 2.3.1
 
   vite@5.1.4(@types/node@22.8.1):
     dependencies:

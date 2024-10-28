@@ -2,4 +2,4 @@
 title: First post
 ---
 
-This is really freakin cool, right?
+This is really freakin cool, right??
