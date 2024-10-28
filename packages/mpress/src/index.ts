@@ -14,7 +14,6 @@ export interface Node {
   html: string
   text: string
   parent: Node | null
-  children: () => Promise<Node[]>
 }
 
 export function dir(path: string): Dir {

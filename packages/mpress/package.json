@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Tool for working with collections of markdown",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
     "check": "tsc --noEmit",
@@ -16,7 +16,7 @@
     "dist/**"
   ],
   "exports": {
-    ".": "dist/index.js"
+    ".": "dist/src/index.js"
   },
   "keywords": [
     "markdown"

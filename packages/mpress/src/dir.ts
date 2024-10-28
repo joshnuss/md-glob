@@ -60,9 +60,6 @@ export class Dir {
     const { title, date, author, summary, tags, ...metadata } = data
     const id = path.basename(filePath, '.md')
     const parent = null
-    const children = async () => {
-      return [] as Node[]
-    }
     const html = await markdown.to_html(content)
     const text = await markdown.to_text(content)
 
@@ -77,8 +74,7 @@ export class Dir {
       content,
       html,
       text,
-      parent,
-      children
+      parent
     }
   }
 }

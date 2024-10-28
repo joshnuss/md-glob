@@ -1,5 +1,9 @@
 {
 	"compilerOptions": {
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"target": "es2023",
+		"outDir": "./dist",
 		"allowJs": true,
 		"checkJs": true,
 		"esModuleInterop": true,

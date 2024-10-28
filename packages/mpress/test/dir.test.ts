@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { dir } from '../src/index.ts'
+import { dir } from '../src/index.js'
 
 describe('dir', () => {
   const docs = dir('test/fixtures/docs')
