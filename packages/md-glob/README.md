@@ -87,7 +87,7 @@ import { docs } from '$lib/server/content.ts'
 
 export async function load() {
   return {
-    menus: docs.roots()
+    menus: await docs.roots()
   }
 }
 ```
@@ -99,8 +99,10 @@ To display a list of blog posts with paging:
 import { blog } from '$lib/server/content.ts'
 
 export async function load({ url }) {
+  const query = url.searchParams.get('q')
   const page = url.searchParams.get('page')
-  const posts = blog.search({ page })
+
+  const posts = await blog.search(query, { page })
 
   return { posts }
 }
