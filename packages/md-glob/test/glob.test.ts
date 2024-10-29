@@ -82,7 +82,6 @@ describe('glob', () => {
     })
 
     describe('parent', () => {
-
       test('when parent requested on node, parent is defined', async () => {
         const parent = await docs.get('intro')
 
@@ -95,7 +94,7 @@ describe('glob', () => {
         if (!doc) throw Error('missing doc')
 
         expect(doc.parent).toStrictEqual(parent)
-        expect(await docs.parent(doc.id)).toStrictEqual(parent)
+        expect(await docs.parent('intro/overview.md')).toStrictEqual(parent)
       })
 
       test('when parent requested on dir, parent is defined', async () => {
@@ -110,10 +109,53 @@ describe('glob', () => {
         if (!doc) throw Error('missing doc')
 
         expect(doc.parent).toStrictEqual(parent)
-        expect(await docs.parent(doc.id)).toStrictEqual(parent)
+        expect(await docs.parent('intro/tutorial')).toStrictEqual(parent)
       })
 
       test('when root node, parent is null')
+    })
+
+    describe('children', () => {
+      test('when directory has children, gets children', async () => {
+        const parent = await docs.get('intro/tutorial', {
+          include: {
+            children: true
+          }
+        })
+
+        const child = await docs.get('intro/tutorial/first')
+
+        if (!parent) throw Error('missing parent')
+
+        expect(parent.children).toStrictEqual([child])
+        expect(await docs.children('intro/tutorial')).toStrictEqual([child])
+      })
+
+      test('when directory is empty, gets empty list of children', async () => {
+        const empty = await docs.get('empty', {
+          include: {
+            children: true
+          }
+        })
+
+        if (!empty) throw Error('missing folder')
+
+        expect(empty.children).toStrictEqual([])
+        expect(await docs.children('empty')).toStrictEqual([])
+      })
+
+      test('when file, gets empty list of children', async () => {
+        const doc = await docs.get('intro/tutorial/first', {
+          include: {
+            children: true
+          }
+        })
+
+        if (!doc) throw Error('missing doc')
+
+        expect(doc.children).toStrictEqual([])
+        expect(await docs.children('intro/tutorial/first')).toStrictEqual([])
+      })
     })
   })
 })

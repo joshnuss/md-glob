@@ -8,6 +8,7 @@ import type { Node } from './index.ts'
 export interface GlobOptions {
   include?: {
     parent?: boolean
+    children?: boolean
   }
 }
 
@@ -66,6 +67,16 @@ export class Glob {
     return this.get(parts.dir)
   }
 
+  async children(id: string): Promise<Node[]> {
+    const pattern = path.join(this.path, id, '*.md')
+    const dirPath = path.join(this.path, id)
+
+    if (await isDirectory(dirPath))
+      return this.#readFiles(pattern, {})
+
+    return []
+  }
+
   async #readFiles(pattern: string, options: GlobOptions): Promise<Node[]> {
     const files = await glob(pattern)
 
@@ -107,6 +118,7 @@ export class Glob {
     const indexPath = path.join(dirPath, 'index.md')
     const relativePath = path.relative(this.path, dirPath)
     const parent = options.include?.parent ? await this.parent(relativePath) : null
+    const children = options.include?.children ? await this.children(relativePath) : []
 
     if (await exists(indexPath)) {
       const indexNode = await this.#readNode(indexPath, {})
@@ -116,7 +128,8 @@ export class Glob {
         ...indexNode,
         id: path.relative(this.path, parts.dir),
         type: 'directory',
-        parent
+        parent,
+        children
       }
     }
 
@@ -133,7 +146,7 @@ export class Glob {
       html: '',
       text: '',
       parent,
-      children: []
+      children
     }
   }
 }
