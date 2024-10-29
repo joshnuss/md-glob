@@ -78,15 +78,36 @@ describe('glob', () => {
       expect(doc?.id).toBe('intro')
       expect(doc?.type).toBe('directory')
       expect(doc?.title).toBe('Intro index page')
+      expect(doc?.text).toBe('This is the intro page\n')
     })
 
-    test('when child node, parent is defined', async () => {
-      const parent = await docs.get('example/intro')
-      const doc = await docs.get('example/intro/overview.md')
+    describe('parent', () => {
 
-      expect(doc?.parent).toBe(parent)
+      test('when parent requested on node, parent is defined', async () => {
+        const parent = await docs.get('intro')
+
+        const doc = await docs.get('intro/overview.md', {
+          include: {
+            parent: true
+          }
+        })
+
+        expect(doc?.parent).toStrictEqual(parent)
+      })
+
+      test('when parent requested on dir, parent is defined', async () => {
+        const parent = await docs.get('intro')
+
+        const doc = await docs.get('intro/tutorial', {
+          include: {
+            parent: true
+          }
+        })
+
+        expect(doc?.parent).toStrictEqual(parent)
+      })
+
+      test('when root node, parent is null')
     })
-
-    test('when root node, parent is null')
   })
 })

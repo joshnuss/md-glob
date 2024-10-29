@@ -5,6 +5,12 @@ import frontMatter from 'gray-matter'
 import * as markdown from './markdown.js'
 import type { Node } from './index.ts'
 
+export interface GlobOptions {
+  include?: {
+    parent?: boolean
+  }
+}
+
 export class Glob {
   pattern: string
   path: string
@@ -14,11 +20,17 @@ export class Glob {
     this.path = pattern.split('*')[0]
   }
 
-  async get(id: string): Promise<Node | null> {
-    const filePath = path.join(this.path, id + '.md')
+  async get(id: string, options: GlobOptions = {}): Promise<Node | null> {
+    const filePath = path.join(this.path, id)
+    const parts = path.parse(filePath)
+    const dir = path.join(parts.dir, parts.name)
+
+    if (await isDirectory(dir)) {
+      return await this.#readDirectory(dir, options)
+    }
 
     try {
-      return await this.#readNode(filePath)
+      return await this.#readNode(filePath, options)
     } catch (e) {
       return null
     }
@@ -39,27 +51,36 @@ export class Glob {
   }
 
   async descendants(): Promise<Node[]> {
-    return this.#readFiles(this.pattern)
+    return this.#readFiles(this.pattern, {})
   }
 
-  async roots(): Promise<Node[]> {
+  async roots(options: GlobOptions = {}): Promise<Node[]> {
     const pattern = path.join(this.path, '*.md')
 
-    return this.#readFiles(pattern)
+    return this.#readFiles(pattern, options)
   }
 
-  async #readFiles(pattern: string): Promise<Node[]> {
+  async parent(id: string): Promise<Node | null> {
+    const parts = path.parse(id)
+
+    return this.get(parts.dir)
+  }
+
+  async #readFiles(pattern: string, options: GlobOptions): Promise<Node[]> {
     const files = await glob(pattern)
 
-    return await Promise.all(files.map(this.#readNode))
+    return await Promise.all(files.map(node => this.#readNode(node, options)))
   }
 
-  async #readNode(filePath: string) {
+  async #readNode(filePath: string, options: GlobOptions): Promise<Node> {
+    if (!filePath.endsWith('.md')) filePath = `${filePath}.md`
+
     const raw = await fs.readFile(filePath, 'utf8')
     const { data, content } = frontMatter(raw)
     const { title, date, author, summary, tags, ...metadata } = data
     const id = path.basename(filePath, '.md')
-    const parent = null
+    const relativePath = path.relative(this.path, filePath)
+    const parent = options.include?.parent ? await this.parent(relativePath) : null
     const children: Node[] = []
     const html = await markdown.to_html(content)
     const text = await markdown.to_text(content)
@@ -80,6 +101,40 @@ export class Glob {
       children
     }
   }
+
+  async #readDirectory(dirPath: string, options: GlobOptions): Promise<Node> {
+    const indexPath = path.join(dirPath, 'index.md')
+    const relativePath = path.relative(this.path, dirPath)
+    const parent = options.include?.parent ? await this.parent(relativePath) : null
+
+    if (await exists(indexPath)) {
+      const indexNode = await this.#readNode(indexPath, {})
+      const parts = path.parse(indexPath)
+
+      return {
+        ...indexNode,
+        id: path.relative(this.path, parts.dir),
+        type: 'directory',
+        parent
+      }
+    }
+
+    return {
+      id: relativePath,
+      type: 'directory',
+      title: relativePath,
+      summary: null,
+      date: null,
+      author: null,
+      tags: [],
+      metadata: {},
+      content: '',
+      html: '',
+      text: '',
+      parent,
+      children: []
+    }
+  }
 }
 
 function parse_tags(tags: string | string[] | null): string[] {
@@ -88,4 +143,22 @@ function parse_tags(tags: string | string[] | null): string[] {
   if (typeof tags == 'string') return tags.split(',').map((s) => s.trim())
 
   return tags
+}
+
+async function isDirectory(dir: string): Promise<boolean> {
+  try {
+    const stats = await fs.stat(dir)
+    return stats.isDirectory()
+  } catch (e) {
+    return false
+  }
+}
+
+async function exists(dir: string): Promise<boolean> {
+  try {
+    await fs.stat(dir)
+    return true
+  } catch (e) {
+    return false
+  }
 }
