@@ -12,6 +12,7 @@ describe('glob', () => {
     const node = nodes[0]
 
     expect(node.id).toBe('example')
+    expect(node.type).toBe('file')
     expect(node.title).toBe('Example')
     expect(node.summary).toBe('This is a summary')
     expect(node.author).toBe('Josh')
@@ -75,6 +76,7 @@ describe('glob', () => {
       const doc = await docs.get('intro')
 
       expect(doc?.id).toBe('intro')
+      expect(doc?.type).toBe('directory')
       expect(doc?.title).toBe('Intro index page')
     })
 

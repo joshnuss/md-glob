@@ -4,6 +4,7 @@ export { Glob }
 
 export interface Node {
   id: string
+  type: 'file' | 'directory',
   title: string
   summary: string | null
   author: string | null

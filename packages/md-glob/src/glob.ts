@@ -66,6 +66,7 @@ export class Glob {
 
     return {
       id,
+      type: 'file',
       title,
       summary,
       date,
