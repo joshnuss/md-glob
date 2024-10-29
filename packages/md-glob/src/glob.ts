@@ -39,12 +39,10 @@ export class Glob {
   }
 
   async descendants(): Promise<Node[]> {
-    const pattern = path.join(this.path, '**/*.md')
-
-    return this.#readFiles(pattern)
+    return this.#readFiles(this.pattern)
   }
 
-  async children(): Promise<Node[]> {
+  async roots(): Promise<Node[]> {
     const pattern = path.join(this.path, '*.md')
 
     return this.#readFiles(pattern)
@@ -62,6 +60,7 @@ export class Glob {
     const { title, date, author, summary, tags, ...metadata } = data
     const id = path.basename(filePath, '.md')
     const parent = null
+    const children: Node[] = []
     const html = await markdown.to_html(content)
     const text = await markdown.to_text(content)
 
@@ -76,7 +75,8 @@ export class Glob {
       content,
       html,
       text,
-      parent
+      parent,
+      children
     }
   }
 }

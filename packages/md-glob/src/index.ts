@@ -14,6 +14,7 @@ export interface Node {
   html: string
   text: string
   parent: Node | null
+  children: Node[]
 }
 
 export function glob(pattern: string): Glob {

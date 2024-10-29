@@ -4,8 +4,8 @@ import { glob } from '../src/index.js'
 describe('glob', () => {
   const docs = glob('test/fixtures/docs/**/*.md')
 
-  test('has children', async () => {
-    const nodes = await docs.children()
+  test('has roots', async () => {
+    const nodes = await docs.roots()
 
     expect(nodes.length).toBe(3)
 
@@ -22,6 +22,7 @@ describe('glob', () => {
     expect(node.html).toBe('<p>Hello World!</p>')
     expect(node.text).toBe('Hello World!\n')
     expect(node.parent).toBe(null)
+    expect(node.children).toEqual([])
   })
 
   describe('get', () => {
