@@ -71,7 +71,7 @@ import { docs } from '$lib/server/content.ts'
 import { error } from '@sveltejs/kit'
 
 export async function load({ params }) {
-  const doc = docs.get(params.path)
+  const doc = await docs.get(params.path)
 
   if (!doc) throw error(404)
 
