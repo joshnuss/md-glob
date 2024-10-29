@@ -1,4 +1,4 @@
-mpress
+md-glob
 ---------
 
 A tool for working with directories of markdown files. Suitable for a blog or docs sites.
@@ -11,7 +11,7 @@ But blogs and docs sites have **many files**. They need functions that work acro
 
 These functions take the most time to build.
 
-**`mpress`** solves this problem by providing an API for working with a **collection of markdown files**.
+**`md-glob`** solves this problem by providing an API for working with a **collection of markdown files**.
 
 ## Benefits
 
@@ -27,7 +27,7 @@ These functions take the most time to build.
 ## Setup
 
 ```sh
-pnpm install mpress
+pnpm install md-glob
 ```
 
 ## Usage
@@ -51,23 +51,23 @@ date: 2024-11-01
 Hi, this is my first doc
 ```
 
-First, create shared instances of `dir()` in `src/lib/server/docs.ts`:
+First, create shared instances of `glob()` in `src/lib/server/content.ts`:
 
 ```typescript
-import { dir } from 'mpress'
+import { glob } from 'md-glob'
 
 // load docs folder
-export const docs = dir('./docs')
+export const docs = glob('./docs/**/*.md')
 
 // load posts folder
-export const blog = dir('./posts')
+export const blog = glob('./posts/*.md')
 ```
 
-Then, use those shared instances to get docs or posts by path:
+Then, use those shared instances to get docs or posts:
 
 ```typescript
 // src/routes/docs/[...path]/+page.server.ts
-import { docs } from '$lib/server/docs.ts'
+import { docs } from '$lib/server/content.ts'
 import { error } from '@sveltejs/kit'
 
 export async function load({ params }) {
@@ -83,7 +83,7 @@ To display a menu, use `docs.roots()`:
 
 ```typescript
 // src/routes/+layout.server.ts
-import { docs } from '$lib/server/docs.ts'
+import { docs } from '$lib/server/content.ts'
 
 export async function load() {
   return {
@@ -96,7 +96,7 @@ To display a list of blog posts with paging:
 
 ```typescript
 // src/routes/+page.server.ts
-import { blog } from '$lib/server/docs.ts'
+import { blog } from '$lib/server/content.ts'
 
 export async function load({ url }) {
   const page = url.searchParams.get('page')

@@ -1,8 +1,8 @@
 import { describe, test, expect } from 'vitest'
-import { dir } from '../src/index.js'
+import { glob } from '../src/index.js'
 
-describe('dir', () => {
-  const docs = dir('test/fixtures/docs')
+describe('glob', () => {
+  const docs = glob('test/fixtures/docs/**/*.md')
 
   test('has children', async () => {
     const nodes = await docs.children()

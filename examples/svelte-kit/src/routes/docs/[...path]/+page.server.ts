@@ -1,4 +1,4 @@
-import { docs } from '$lib/mpress'
+import { docs } from '$lib/content'
 import { error } from '@sveltejs/kit'
 
 export async function load({ params }) {

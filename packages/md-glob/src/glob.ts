@@ -5,11 +5,13 @@ import frontMatter from 'gray-matter'
 import * as markdown from './markdown.js'
 import type { Node } from './index.ts'
 
-export class Dir {
+export class Glob {
+  pattern: string
   path: string
 
-  constructor(path: string) {
-    this.path = path
+  constructor(pattern: string) {
+    this.pattern = pattern
+    this.path = pattern.split('*')[0]
   }
 
   async get(id: string): Promise<Node | null> {
@@ -26,8 +28,8 @@ export class Dir {
     const nodes = await this.descendants()
     const group: Record<string, number> = {}
 
-    for (let node of nodes) {
-      for (let tag of node.tags) {
+    for (const node of nodes) {
+      for (const tag of node.tags) {
         group[tag] ||= 0
         group[tag] += 1
       }

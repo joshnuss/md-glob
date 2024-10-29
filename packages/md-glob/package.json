@@ -1,5 +1,5 @@
 {
-  "name": "mpress",
+  "name": "md-glob",
   "version": "0.0.1",
   "description": "Tool for working with collections of markdown",
   "type": "module",
@@ -23,7 +23,7 @@
   ],
   "author": "Josh Nussbaum",
   "license": "MIT",
-  "repository": "github:joshnuss/mpress",
+  "repository": "github:joshnuss/md-glob",
   "dependencies": {
     "gray-matter": "^4.0.3",
     "rehype-stringify": "^10.0.1",

@@ -1,6 +1,6 @@
-import { Dir } from './dir.js'
+import { Glob } from './glob.js'
 
-export { Dir }
+export { Glob }
 
 export interface Node {
   id: string
@@ -16,6 +16,6 @@ export interface Node {
   parent: Node | null
 }
 
-export function dir(path: string): Dir {
-  return new Dir(path)
+export function glob(pattern: string): Glob {
+  return new Glob(pattern)
 }

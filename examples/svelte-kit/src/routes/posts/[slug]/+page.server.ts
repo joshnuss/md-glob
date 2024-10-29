@@ -1,4 +1,4 @@
-import { blog } from '$lib/mpress'
+import { blog } from '$lib/content'
 import { error } from '@sveltejs/kit'
 
 export async function load({ params }) {
