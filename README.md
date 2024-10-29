@@ -1,6 +1,6 @@
 # md-glob
 
-Easily work with collections of markdown files. Suitable for blog and docs sites.
+A tool for working with directories of markdown files. Suitable for a blog or docs sites.
 
 ## Benefits
 
