@@ -92,7 +92,10 @@ describe('glob', () => {
           }
         })
 
-        expect(doc?.parent).toStrictEqual(parent)
+        if (!doc) throw Error('missing doc')
+
+        expect(doc.parent).toStrictEqual(parent)
+        expect(await docs.parent(doc.id)).toStrictEqual(parent)
       })
 
       test('when parent requested on dir, parent is defined', async () => {
@@ -104,7 +107,10 @@ describe('glob', () => {
           }
         })
 
-        expect(doc?.parent).toStrictEqual(parent)
+        if (!doc) throw Error('missing doc')
+
+        expect(doc.parent).toStrictEqual(parent)
+        expect(await docs.parent(doc.id)).toStrictEqual(parent)
       })
 
       test('when root node, parent is null')

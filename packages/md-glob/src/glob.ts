@@ -78,8 +78,9 @@ export class Glob {
     const raw = await fs.readFile(filePath, 'utf8')
     const { data, content } = frontMatter(raw)
     const { title, date, author, summary, tags, ...metadata } = data
-    const id = path.basename(filePath, '.md')
     const relativePath = path.relative(this.path, filePath)
+    const parts = path.parse(relativePath)
+    const id = path.join(parts.dir, parts.name)
     const parent = options.include?.parent ? await this.parent(relativePath) : null
     const children: Node[] = []
     const html = await markdown.to_html(content)
