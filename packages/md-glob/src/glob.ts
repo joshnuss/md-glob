@@ -68,6 +68,8 @@ export class Glob {
   async parent(id: string): Promise<Node | null> {
     const parts = path.parse(id)
 
+    if (!parts.dir) return null
+
     return this.get(parts.dir)
   }
 

@@ -118,7 +118,17 @@ describe('glob', () => {
         expect(await docs.parent('intro/tutorial')).toStrictEqual(parent)
       })
 
-      test('when root node, parent is null')
+      test('when root node, parent is null', async () => {
+        const doc = await docs.get('intro', {
+          include: {
+            parent: true
+          }
+        })
+
+        if (!doc) throw Error('missing doc')
+
+        expect(doc.parent).toBeNull()
+      })
     })
 
     describe('children', () => {
