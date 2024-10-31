@@ -15,10 +15,12 @@ export interface GlobOptions {
 export class Glob {
   #pattern: string
   #path: string
+  #extension: string
 
   constructor(pattern: string) {
     this.#pattern = pattern
     this.#path = pattern.split('*')[0]
+    this.#extension = path.extname(pattern)
   }
 
   async get_all(): Promise<Node[]> {
@@ -60,7 +62,7 @@ export class Glob {
   }
 
   async roots(options: GlobOptions = {}): Promise<Node[]> {
-    const pattern = path.join(this.#path, '*.md')
+    const pattern = path.join(this.#path, `*${this.#extension}`)
 
     return this.#readFiles(pattern, options)
   }
@@ -74,7 +76,7 @@ export class Glob {
   }
 
   async children(id: string): Promise<Node[]> {
-    const pattern = path.join(this.#path, id, '*.md')
+    const pattern = path.join(this.#path, id, `*${this.#extension}`)
     const dirPath = path.join(this.#path, id)
 
     if (await isDirectory(dirPath))
@@ -90,7 +92,7 @@ export class Glob {
   }
 
   async #readNode(filePath: string, options: GlobOptions): Promise<Node> {
-    if (!filePath.endsWith('.md')) filePath = `${filePath}.md`
+    if (!filePath.endsWith(this.#extension)) filePath = `${filePath}${this.#extension}`
 
     const raw = await fs.readFile(filePath, 'utf8')
     const { data, content } = frontMatter(raw)
@@ -121,7 +123,7 @@ export class Glob {
   }
 
   async #readDirectory(dirPath: string, options: GlobOptions): Promise<Node> {
-    const indexPath = path.join(dirPath, 'index.md')
+    const indexPath = path.join(dirPath, `index${this.#extension}`)
     const relativePath = path.relative(this.#path, dirPath)
     const parent = options.include?.parent ? await this.parent(relativePath) : null
     const children = options.include?.children ? await this.children(relativePath) : []
