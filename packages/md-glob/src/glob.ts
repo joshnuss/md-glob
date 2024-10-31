@@ -21,6 +21,10 @@ export class Glob {
     this.#path = pattern.split('*')[0]
   }
 
+  async get_all(): Promise<Node[]> {
+    return this.#readFiles(this.#pattern, {})
+  }
+
   async get(id: string, options: GlobOptions = {}): Promise<Node | null> {
     const filePath = path.join(this.#path, id)
     const parts = path.parse(filePath)
@@ -38,7 +42,7 @@ export class Glob {
   }
 
   async tags(): Promise<Record<string, number>> {
-    const nodes = await this.descendants()
+    const nodes = await this.get_all()
     const group: Record<string, number> = {}
 
     for (const node of nodes) {
@@ -49,10 +53,6 @@ export class Glob {
     }
 
     return group
-  }
-
-  async descendants(): Promise<Node[]> {
-    return this.#readFiles(this.#pattern, {})
   }
 
   async root(options: GlobOptions = {}): Promise<Node> {

@@ -26,6 +26,16 @@ describe('glob', () => {
     expect(node.children).toEqual([])
   })
 
+  test('get_all returns all', async () => {
+    const blog = glob('./test/fixtures/posts/*.md')
+    const posts = await blog.get_all()
+
+    expect(posts).toEqual([
+      expect.objectContaining({ id: 'first-post', title: 'First Post' }),
+      expect.objectContaining({ id: 'second-post', title: 'Second Post' })
+    ])
+  })
+
   describe('get', () => {
     test('when file exists', async () => {
       const example = await docs.get('example')
