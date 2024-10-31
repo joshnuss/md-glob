@@ -81,6 +81,12 @@ describe('glob', () => {
       expect(doc?.text).toBe('This is the intro page\n')
     })
 
+    test('root node', async () => {
+      const root = await docs.root()
+
+      expect(root).toBeTruthy()
+    })
+
     describe('parent', () => {
       test('when parent requested on node, parent is defined', async () => {
         const parent = await docs.get('intro')

@@ -55,6 +55,10 @@ export class Glob {
     return this.#readFiles(this.pattern, {})
   }
 
+  async root(options: GlobOptions = {}): Promise<Node> {
+    return this.#readDirectory(this.path, options)
+  }
+
   async roots(options: GlobOptions = {}): Promise<Node[]> {
     const pattern = path.join(this.path, '*.md')
 
