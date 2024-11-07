@@ -7,11 +7,11 @@ A tool for working with directories of markdown files. Suitable for a blog or do
 
 ## Problem
 
-Most markdown tools work with a **single file**.
+Most markdown tools work with a **single file**, but blogs and docs sites have **many files**.
 
-But blogs and docs sites have **many files**. They need functions that work across multiple files, like displaying a menu, searching & filtering, grouping and pagination.
+These sites have functions that work across multiple files, like displaying a menu, searching, filtering, sorting, and pagination.
 
-These functions take the most time to build.
+These features take the most time to build.
 
 **`md-glob`** solves this problem by providing an API for working with a **collection of markdown files**.
 
@@ -24,7 +24,7 @@ These functions take the most time to build.
 - **Based on [Unified](https://unifiedjs.com)**. Supports `remark` and `rehype` plugins.
 - Supports **front-matter** like `title`, `summary`, `author`, `date` and `tags`.
 - Folder structure can be **hierarchical** (docs) **or flat** (blog).
-- **Integrated search engines** like Algolia and MeiliSearch. Updates search index during CI deployment.
+- **Integrated search engines** like Algolia and MeiliSearch via [unsearch](https://github.com/joshnuss/unsearch). Search index can be updated during CI deployment or run in-memory for small sites.
 
 ## Setup
 
