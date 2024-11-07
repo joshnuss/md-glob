@@ -26,9 +26,9 @@ describe('glob', () => {
     expect(node.children).toEqual([])
   })
 
-  test('get_all returns all', async () => {
+  test('all returns all', async () => {
     const blog = glob('./test/fixtures/posts/*.md')
-    const posts = await blog.get_all()
+    const posts = await blog.all()
 
     expect(posts).toEqual([
       expect.objectContaining({ id: 'first-post', title: 'First Post' }),

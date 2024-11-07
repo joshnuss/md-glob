@@ -23,7 +23,7 @@ export class Glob {
     this.#extension = path.extname(pattern)
   }
 
-  async get_all(): Promise<Node[]> {
+  async all(): Promise<Node[]> {
     return this.#readFiles(this.#pattern, {})
   }
 
@@ -44,7 +44,7 @@ export class Glob {
   }
 
   async tags(): Promise<Record<string, number>> {
-    const nodes = await this.get_all()
+    const nodes = await this.all()
     const group: Record<string, number> = {}
 
     for (const node of nodes) {
